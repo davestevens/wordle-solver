@@ -5,9 +5,9 @@
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Compiles watches for production
 ```
-npm run serve
+npm run watch
 ```
 
 ### Compiles and minifies for production

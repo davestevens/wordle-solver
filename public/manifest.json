@@ -1,0 +1,20 @@
+{
+    "name": "Wordle Solver",
+    "description": "Provide possible words for solving Wordle puzzle.",
+    "version": "0.1.0",
+    "content_scripts": [
+        {
+            "matches": [
+                "https://www.powerlanguage.co.uk/wordle/"
+            ],
+            "js": [
+                "js/app.js",
+                "js/chunk-vendors.js"
+            ],
+            "css": [
+                "css/app.css"
+            ]
+        }
+    ],
+    "manifest_version": 2
+}
