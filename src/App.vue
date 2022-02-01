@@ -1,17 +1,27 @@
 <template>
-  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+  <div v-if="gameIsInProgress">
+    <CurrentGame />
+  </div>
+  <div v-else>
+    <CompletedGame />
+  </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component'
-import HelloWorld from './components/HelloWorld.vue'
+import CurrentGame from './components/CurrentGame.vue'
+import CompletedGame from './components/CompletedGame.vue'
+import { isGameInProgress } from './services/gameState'
 
 @Options({
   components: {
-    HelloWorld
+    CurrentGame,
+    CompletedGame
   }
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+  gameIsInProgress = isGameInProgress()
+}
 </script>
 
 <style>
@@ -20,5 +30,7 @@ export default class App extends Vue {}
   top: 0;
   right: 0;
   width: 200px;
+  max-height: 100%;
+  overflow: auto;
 }
 </style>
