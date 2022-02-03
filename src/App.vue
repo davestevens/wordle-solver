@@ -1,9 +1,8 @@
 <template>
-  <div v-if="gameIsInProgress">
-    <CurrentGame />
-  </div>
-  <div v-else>
-    <CompletedGame />
+  <div>
+    <header>Wordle Solver</header>
+    <CurrentGame v-if="gameIsInProgress" :rowIndex="currentRow" />
+    <CompletedGame v-else />
   </div>
 </template>
 
@@ -11,7 +10,7 @@
 import { Options, Vue } from 'vue-class-component'
 import CurrentGame from './components/CurrentGame.vue'
 import CompletedGame from './components/CompletedGame.vue'
-import { isGameInProgress } from './services/gameState'
+import { getCurrentRow, isGameInProgress } from './services/gameState'
 
 @Options({
   components: {
@@ -20,7 +19,22 @@ import { isGameInProgress } from './services/gameState'
   }
 })
 export default class App extends Vue {
-  gameIsInProgress = isGameInProgress()
+  public gameIsInProgress: boolean = isGameInProgress()
+  public currentRow: number = getCurrentRow()
+  private interval: number | undefined
+
+  public mounted (): void {
+    this.interval = setInterval(() => this.queryGameState(), 2000)
+  }
+
+  public unmounted (): void {
+    clearInterval(this.interval)
+  }
+
+  private queryGameState (): void {
+    this.gameIsInProgress = isGameInProgress()
+    this.currentRow = getCurrentRow()
+  }
 }
 </script>
 
@@ -30,5 +44,20 @@ export default class App extends Vue {
   top: 0;
   right: 0;
   width: 335px;
+  color: var(--color-tone-1);
+  user-select: none;
+}
+
+header {
+  color: var(--color-tone-1);
+  border-bottom: 1px solid var(--color-tone-4);
+  height: var(--header-height);
+  font-weight: 700;
+  font-size: 24px;
+  line-height: var(--header-height);
+  letter-spacing: 0.2rem;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 8px;
 }
 </style>

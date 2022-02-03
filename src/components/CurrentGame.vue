@@ -1,11 +1,12 @@
 <template>
   <div>
-    <h1>Current Game</h1>
-    <button v-on:click="runParse">Get possible words</button>
     <div v-if="possibleWords.length">
+      <span>{{possibleWords.length}} <span v-if="possibleWords.length > 1">possibilities</span><span v-else>possibility</span></span>:
       <button v-on:click="randomSelection">Random selection</button>
     </div>
-    <ol ref="list">
+    <ol ref="list"
+      :class='{ disabled: !!entering }'
+    >
       <li v-for="(item, index) in possibleWords"
         :key="index"
         :ref="'item' + index"
@@ -15,24 +16,34 @@
         {{ item }}
       </li>
     </ol>
+    <div v-if="entering">Entering word: <span class="entering">{{entering}}</span></div>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue } from 'vue-class-component'
+import { Options, Vue } from 'vue-class-component'
 import { parse } from '../services/parse'
 import { findPossibleWords } from '../services/findPossibleWords'
 import { enterWord } from '../services/enterWord'
 
+@Options({
+  props: {
+    rowIndex: Number
+  }
+})
 export default class CompletedGame extends Vue {
   public possibleWords: string[] = []
   public selected: number = -1;
+  public entering: string = '';
 
-  public runParse (): void {
-    const parsed = parse()
-    this.selected = -1
-    this.possibleWords = findPossibleWords(parsed)
-    this.scrollTo(0)
+  public created (): void {
+    this.$watch('rowIndex', () => {
+      this.resetState()
+    })
+  }
+
+  public mounted (): void {
+    this.resetState()
   }
 
   public randomSelection (): void {
@@ -42,7 +53,20 @@ export default class CompletedGame extends Vue {
   }
 
   public enterWord (selectedWord: string): void {
+    this.entering = selectedWord
     enterWord(selectedWord)
+  }
+
+  private resetState (): void {
+    this.entering = ''
+    this.runParse()
+    this.scrollTo(0)
+  }
+
+  private runParse (): void {
+    const parsed = parse()
+    this.selected = -1
+    this.possibleWords = findPossibleWords(parsed)
   }
 
   private scrollTo (value: number): void {
@@ -54,6 +78,15 @@ export default class CompletedGame extends Vue {
 </script>
 
 <style scoped>
+button {
+  display: inline-block;
+  font-weight: bold;
+  cursor: pointer;
+  background-color: var(--key-bg);
+  color: var(--key-text-color);
+  text-transform: uppercase;
+}
+
 ol {
   list-style: none;
   padding: 0;
@@ -61,6 +94,11 @@ ol {
   max-height: 200px;
   overflow: auto;
 }
+
+ol.disabled {
+  pointer-events: none;
+}
+
 li {
   cursor: pointer;
   display: inline-block;
@@ -75,5 +113,10 @@ li.selected {
 li:hover {
   background: var(--color-correct);
   color: var(--tile-text-color);
+}
+
+.entering {
+  font-weight: bold;
+  text-transform: uppercase;
 }
 </style>

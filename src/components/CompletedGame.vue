@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>Completed Game</h1>
     <button v-on:click="onReset">Reset State</button>
   </div>
 </template>
@@ -16,3 +15,14 @@ export default class CompletedGame extends Vue {
   }
 }
 </script>
+
+<style scoped>
+button {
+  display: inline-block;
+  font-weight: bold;
+  cursor: pointer;
+  background-color: var(--key-bg);
+  color: var(--key-text-color);
+  text-transform: uppercase;
+}
+</style>

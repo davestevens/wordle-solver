@@ -13,6 +13,10 @@ export const isGameInProgress = (): boolean => {
   return getGameState()?.gameStatus === 'IN_PROGRESS'
 }
 
+export const getCurrentRow = (): number => {
+  return getGameState()?.rowIndex
+}
+
 export const resetGameState = (): void => {
   window.localStorage.removeItem('gameState')
 }
