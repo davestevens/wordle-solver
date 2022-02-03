@@ -29,8 +29,6 @@ export default class App extends Vue {
   position: absolute;
   top: 0;
   right: 0;
-  width: 200px;
-  max-height: 100%;
-  overflow: auto;
+  width: 335px;
 }
 </style>
