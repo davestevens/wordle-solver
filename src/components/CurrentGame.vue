@@ -21,23 +21,18 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component'
+import { Vue } from 'vue-class-component'
 import { parse } from '../services/parse'
 import { findPossibleWords } from '../services/findPossibleWords'
 import { enterWord } from '../services/enterWord'
 
-@Options({
-  props: {
-    rowIndex: Number
-  }
-})
 export default class CompletedGame extends Vue {
   public possibleWords: string[] = []
   public selected: number = -1;
   public entering: string = '';
 
   public created (): void {
-    this.$watch('rowIndex', () => {
+    document.querySelector('game-app')?.shadowRoot?.querySelector('#game')?.addEventListener('game-last-tile-revealed-in-row', () => {
       this.resetState()
     })
   }

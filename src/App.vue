@@ -1,7 +1,7 @@
 <template>
   <div>
     <header>Wordle Solver</header>
-    <CurrentGame v-if="gameIsInProgress" :rowIndex="currentRow" />
+    <CurrentGame v-if="gameIsInProgress" />
     <CompletedGame v-else />
   </div>
 </template>
@@ -10,7 +10,7 @@
 import { Options, Vue } from 'vue-class-component'
 import CurrentGame from './components/CurrentGame.vue'
 import CompletedGame from './components/CompletedGame.vue'
-import { getCurrentRow, isGameInProgress } from './services/gameState'
+import { isGameInProgress } from './services/gameState'
 
 @Options({
   components: {
@@ -20,7 +20,6 @@ import { getCurrentRow, isGameInProgress } from './services/gameState'
 })
 export default class App extends Vue {
   public gameIsInProgress: boolean = isGameInProgress()
-  public currentRow: number = getCurrentRow()
   private interval: number | undefined
 
   public mounted (): void {
@@ -33,7 +32,6 @@ export default class App extends Vue {
 
   private queryGameState (): void {
     this.gameIsInProgress = isGameInProgress()
-    this.currentRow = getCurrentRow()
   }
 }
 </script>
