@@ -6,7 +6,7 @@ interface IGameState {
 }
 
 export const getGameState = (): IGameState => {
-  return JSON.parse(window.localStorage.gameState)
+  return JSON.parse(window.localStorage['nyt-wordle-state'])
 }
 
 export const isGameInProgress = (): boolean => {
@@ -14,5 +14,5 @@ export const isGameInProgress = (): boolean => {
 }
 
 export const resetGameState = (): void => {
-  window.localStorage.removeItem('gameState')
+  window.localStorage.removeItem('nyt-wordle-state')
 }
